@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.olivergierke.sos</groupId>
+		<artifactId>sos-rest</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>sos-rest-catalog</artifactId>
+	<name>System of Systems - REST - Catalog</name>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>sos-rest-events</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>

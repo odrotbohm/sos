@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.olivergierke.sos</groupId>
+	<artifactId>sos-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>System of Systems - Parent</name>
+	<description>Demo project for my talk "Refactoring to a System of Systems"</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.0.M4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<spring-data-releasetrain.version>Kay-BUILD-SNAPSHOT</spring-data-releasetrain.version>
+		<spring-hateoas.version>0.24.0.BUILD-SNAPSHOT</spring-hateoas.version>
+		<spring-cloud.version>2.0.0.M1</spring-cloud.version>
+	</properties>
+
+	<modules>
+		<module>00-monolith</module>
+		<module>10-microlith</module>
+		<module>20-modulith</module>
+		<module>30-messaging-sos</module>
+		<module>40-restful-sos</module>
+	</modules>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-json</artifactId>
+		</dependency>
+
+		<!-- Test -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.boot.experimental</groupId>
+						<artifactId>spring-boot-thin-layout</artifactId>
+						<version>1.0.7.RELEASE</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-libs-snapshot</id>
+			<url>https://repo.spring.io/libs-snapshot</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-libs-snapshot</id>
+			<url>https://repo.spring.io/libs-snapshot</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
