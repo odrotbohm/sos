@@ -17,8 +17,7 @@ package example.sos.monolith;
 
 import example.sos.monolith.catalog.Catalog;
 import example.sos.monolith.catalog.Product;
-import example.sos.monolith.inventory.InventoryItemRepository;
-import example.sos.monolith.inventory.InventoryItem;
+import example.sos.monolith.inventory.Inventory;
 import example.sos.monolith.orders.OrderManager;
 
 import java.math.BigDecimal;
@@ -39,15 +38,15 @@ public class MonolithApplication {
 	}
 
 	@Bean
-	CommandLineRunner onStartup(Catalog catalog, InventoryItemRepository inventory, OrderManager orders) {
+	CommandLineRunner onStartup(Catalog catalog, Inventory inventory, OrderManager orders) {
 
 		return args -> {
 
 			Product iPad = catalog.save(new Product("iPad", new BigDecimal(699.99)));
 			Product iPhone = catalog.save(new Product("iPhone", new BigDecimal(899.99)));
 
-			inventory.save(new InventoryItem(iPad, 10));
-			inventory.save(new InventoryItem(iPhone, 15));
+			inventory.addItemFor(iPad, 10);
+			inventory.addItemFor(iPhone, 15);
 		};
 	}
 }
