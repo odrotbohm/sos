@@ -27,7 +27,7 @@ The individual modules provide sketch implementations of these Bounded Context a
 
 * [_The Monolith_](00-monolith) - a typical monolithic Spring Boot application with the Bounded Contexts implemented in packages and the interaction being based on active invocations of Spring beans residing in a different BC.
 * [_The Microlith_](10-microlith) - the former approach transferred into separate systems but keeping the same interaction patter of synchronous, non-idempotent operations. The systems invoking each other via HTTP calls.
-* [_The Modulith_](20-modulith) - an improved version of the modulith with the Bounded Contexts interacting via Spring application events and event listeners.
+* [_The Modulith_](20-modulith) - an improved version of the monolith with the Bounded Contexts interacting via Spring application events and event listeners.
 * [_SOS Messaging_](30-messaging-sos) - the individual Bounded Contexts implemented as separate systems and the interaction implemented via a Kafka message broker.
 * [_SOS REST_](40-restful-sos) - the individual Bounded Contexts implemented as separate systems and the interaction implemented via the events exposed as REST resources.
 
