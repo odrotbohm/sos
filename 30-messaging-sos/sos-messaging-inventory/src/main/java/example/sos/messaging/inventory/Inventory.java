@@ -25,11 +25,22 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface Inventory extends CrudRepository<InventoryItem, UUID> {
 
+	/**
+	 * Returns the {@link InventoryItem} with the given product identifier.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	Optional<InventoryItem> findByProductId(UUID id);
 
+	/**
+	 * @param productId the identifer of the product to be updated.
+	 * @param amount the amount to substract from the current stock.
+	 */
 	default void updateInventoryItem(UUID productId, long amount) {
 
-		InventoryItem item = findByProductId(productId).orElseThrow(() -> new IllegalArgumentException("Unknown product!"));
+		InventoryItem item = findByProductId(productId) //
+				.orElseThrow(() -> new IllegalArgumentException("Unknown product!"));
 
 		save(item.decrease(amount));
 	}
