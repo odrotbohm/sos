@@ -17,19 +17,16 @@ package example.sos.messaging.inventory.integration;
 
 import example.sos.messaging.inventory.Inventory;
 import example.sos.messaging.inventory.InventoryItem;
-import example.sos.messaging.inventory.integration.Payloads.OrderCompleted;
-import example.sos.messaging.inventory.integration.Payloads.ProductAdded;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
-import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.web.JsonPath;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,54 +39,65 @@ import org.springframework.transaction.annotation.Transactional;
 class KafkaIntegration {
 
 	private final Inventory inventory;
-	private final ProjectionFactory projectionFactory;
 
 	/**
 	 * Creates a new {@link InventoryItem} for the product that was added.
 	 * 
-	 * @param message
+	 * @param message will never be {@literal null}.
 	 */
 	@KafkaListener(topics = "products")
-	public void onProductAdded(Message<String> message) throws IOException {
+	public void onProductAdded(ProductAdded message) throws IOException {
 
-		ProductAdded event = readFromMessage(message, ProductAdded.class);
-
-		Optional<InventoryItem> item = inventory.findByProductId(event.getProductId());
+		Optional<InventoryItem> item = inventory.findByProductId(message.getProductId());
 
 		if (item.isPresent()) {
-			log.info("Inventory item for product {} already available!", event.getProductId());
+			log.info("Inventory item for product {} already available!", message.getProductId());
 			return;
 		}
 
-		log.info("Creating inventory item for product {}.", event.getProductId());
+		log.info("Creating inventory item for product {}.", message.getProductId());
 
-		item.orElseGet(() -> inventory.save(InventoryItem.of(event.getProductId(), event.getName(), 0L)));
+		item.orElseGet(() -> inventory.save(InventoryItem.of(message.getProductId(), message.getName(), 0L)));
+	}
+
+	interface ProductAdded {
+
+		@JsonPath("$.product.id")
+		UUID getProductId();
+
+		@JsonPath("$.product.name")
+		String getName();
 	}
 
 	/**
 	 * Updates the current stock by reducing the inventory items by the amount of the individual line items in the order.
 	 * 
-	 * @param event
+	 * @param message will never be {@literal null}.
 	 */
 	@Transactional
 	@KafkaListener(topics = "orders")
-	void onOrderCompleted(Message<String> message) {
+	void on(OrderCompleted message) {
 
-		OrderCompleted event = readFromMessage(message, OrderCompleted.class);
+		log.info("Order completed: {}", message.getOrderId().toString());
 
-		log.info("Order completed: {}", event.getOrderId().toString());
-
-		event.getLineItems().stream() //
+		message.getLineItems().stream() //
 				.peek(it -> log.info("Decreasing quantity of product {} by {}.", it.getProductNumber(), it.getQuantity()))
 				.forEach(it -> inventory.updateInventoryItem(it.getProductNumber(), it.getQuantity()));
 	}
 
-	private <T> T readFromMessage(Message<String> message, Class<T> type) {
+	interface OrderCompleted {
 
-		try (InputStream stream = new ByteArrayInputStream(message.getPayload().getBytes())) {
-			return projectionFactory.createProjection(type, stream);
-		} catch (IOException o_O) {
-			throw new RuntimeException(o_O);
+		@JsonPath("$.order.id")
+		UUID getOrderId();
+
+		@JsonPath("$.order.lineItems")
+		Collection<LineItem> getLineItems();
+
+		interface LineItem {
+
+			UUID getProductNumber();
+
+			Long getQuantity();
 		}
 	}
 }

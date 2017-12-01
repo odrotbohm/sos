@@ -15,25 +15,24 @@
  */
 package example.sos.messaging.orders.integration;
 
-import java.math.BigDecimal;
-import java.util.UUID;
+import example.sos.messaging.orders.Order.OrderCompleted;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.web.JsonPath;
+import org.springframework.context.event.EventListener;
+import org.springframework.kafka.core.KafkaOperations;
+import org.springframework.stereotype.Component;
 
-/**
- * @author Oliver Gierke
- */
-public class Payloads {
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-	interface ProductAdded {
+@Component
+@RequiredArgsConstructor class KafkaIntegration {
 
-		@JsonPath("$.product.id")
-		UUID getProductNumber();
+	private final @NonNull KafkaOperations<Object, Object> kafka;
+	private final @NonNull ObjectMapper mapper;
 
-		@JsonPath("$.product.name")
-		String getDescription();
-
-		@JsonPath("$.product.price")
-		BigDecimal getPrice();
+	@EventListener
+	void on(OrderCompleted event) throws Exception {
+		kafka.send("orders", mapper.writeValueAsString(event));
 	}
 }
