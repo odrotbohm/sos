@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,20 @@
  */
 package example.sos.messaging.orders.integration;
 
-import example.sos.messaging.orders.Order.OrderCompleted;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.context.event.EventListener;
-import org.springframework.kafka.core.KafkaOperations;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.support.converter.ProjectingMessageConverter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Component
-@RequiredArgsConstructor
-class KafkaIntegration {
+/**
+ * @author Oliver Gierke
+ */
+@Configuration
+public class KafkaConfiguration {
 
-	private final @NonNull KafkaOperations<Object, Object> kafka;
-	private final @NonNull ObjectMapper mapper;
-
-	@EventListener
-	void on(OrderCompleted event) throws Exception {
-		kafka.send("orders", mapper.writeValueAsString(event));
+	@Bean
+	ProjectingMessageConverter projectingConverter(ObjectMapper mapper) {
+		return new ProjectingMessageConverter(mapper);
 	}
 }
