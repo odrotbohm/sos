@@ -15,6 +15,7 @@
  */
 package example.sos.modulith.orders;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import example.sos.modulith.catalog.Product;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -84,11 +85,11 @@ public class Order extends AbstractAggregateRoot<Order> {
 	}
 
 	public enum Status {
-		SUBMITTED, COMPLETED;
+		SUBMITTED, COMPLETED
 	}
 
 	@Value
-	@RequiredArgsConstructor(staticName = "of", access = AccessLevel.PRIVATE)
+	@RequiredArgsConstructor(staticName = "of", access = AccessLevel.PRIVATE, onConstructor = @__(@JsonCreator))
 	public static class OrderCompleted {
 		Order order;
 	}
