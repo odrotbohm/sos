@@ -35,6 +35,6 @@ The individual modules provide sketch implementations of these Bounded Context a
 
 ## Build
 
-The repository should build by simply running `mvn clean install` using a recent JDK 8.
+The repository should build by simply running `./mvnw clean install` using a recent JDK 8.
 Sample code uses Lombok, which means that you need a Lombok-enabled IDE in case you want to import the projects into it.
 For detailed instructions about how to work with the individual projects, see the individual module's READMEs.
