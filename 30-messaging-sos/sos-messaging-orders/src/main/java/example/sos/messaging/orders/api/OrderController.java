@@ -22,10 +22,9 @@ import example.sos.messaging.orders.ProductInfoRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.stream.StreamSupport;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +46,7 @@ class OrderController {
 
 		Iterable<ProductInfo> infos = productInfos.findAll(Sort.by("createdDate").descending());
 
-		ProductInfo info = StreamSupport.stream(infos.spliterator(), false) //
+		ProductInfo info = Streamable.of(infos).stream() //
 				.findFirst() //
 				.orElseThrow(() -> new IllegalStateException("No ProductInfo found!"));
 
