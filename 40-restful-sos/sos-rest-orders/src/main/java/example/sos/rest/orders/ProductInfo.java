@@ -36,6 +36,7 @@ import javax.persistence.Id;
  */
 @Data
 @Entity
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductInfo {
 
