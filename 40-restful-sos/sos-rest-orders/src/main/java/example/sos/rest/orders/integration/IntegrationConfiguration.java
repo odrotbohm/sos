@@ -39,7 +39,7 @@ class IntegrationConfiguration {
 	@Bean
 	RemoteResource productResource() {
 
-		ServiceInstance service = new DefaultServiceInstance("catalog", "localhost", 7071, false);
+		ServiceInstance service = new DefaultServiceInstance("catalog", "localhost", 7070, false);
 
 		return new DiscoveredResource(() -> service, traverson -> traverson.follow("events"));
 	}
