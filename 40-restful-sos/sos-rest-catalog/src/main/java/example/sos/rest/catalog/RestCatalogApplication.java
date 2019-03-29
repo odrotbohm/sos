@@ -16,15 +16,12 @@
 package example.sos.rest.catalog;
 
 import example.sos.rest.events.EnablePersistentEvents;
-
-import java.math.BigDecimal;
-
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.hateoas.mvc.ControllerLinkBuilderFactory;
+
+import java.math.BigDecimal;
 
 /**
  * @author Oliver Gierke
@@ -35,11 +32,6 @@ public class RestCatalogApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestCatalogApplication.class, args);
-	}
-
-	@Bean(autowire = Autowire.BY_TYPE)
-	ControllerLinkBuilderFactory foo() {
-		return new ControllerLinkBuilderFactory();
 	}
 
 	@Bean

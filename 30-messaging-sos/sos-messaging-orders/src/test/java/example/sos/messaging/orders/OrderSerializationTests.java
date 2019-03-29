@@ -1,9 +1,13 @@
 package example.sos.messaging.orders;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +36,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OrderSerializationTests {
 
 	@Autowired ObjectMapper mapper;
+
+	@ClassRule
+	public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1).kafkaPorts(9092);
 
 	@Test
 	public void testname() throws Exception {

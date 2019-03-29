@@ -16,20 +16,19 @@
 package example.sos.messaging.broker;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.test.rule.KafkaEmbedded;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
 
 @Configuration
 @RequiredArgsConstructor
 class MessagingConfiguration {
 
-	@Bean
-	KafkaEmbedded kafka() {
+  @Bean
+  EmbeddedKafkaBroker kafka() {
 
-		KafkaEmbedded embedded = new KafkaEmbedded(1);
-		embedded.setKafkaPorts(9092);
-		return embedded;
-	}
+    EmbeddedKafkaBroker embedded = new EmbeddedKafkaBroker(1);
+    embedded.kafkaPorts(9092);
+    return embedded;
+  }
 }
