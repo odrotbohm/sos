@@ -20,9 +20,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.RepositoryLinksResource;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RelProvider;
-import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.hateoas.UriTemplate;
+import org.springframework.hateoas.server.LinkRelationProvider;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,12 +30,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class ProductLinkProcessor implements ResourceProcessor<RepositoryLinksResource> {
+public class ProductLinkProcessor implements RepresentationModelProcessor<RepositoryLinksResource> {
 
 	private final RepositoryEntityLinks entityLinks;
-	private final RelProvider relProvider;
+	private final LinkRelationProvider relProvider;
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.hateoas.ResourceProcessor#process(org.springframework.hateoas.ResourceSupport)
 	 */
@@ -43,10 +43,9 @@ public class ProductLinkProcessor implements ResourceProcessor<RepositoryLinksRe
 	public RepositoryLinksResource process(RepositoryLinksResource resource) {
 
 		Link products = entityLinks.linkToCollectionResource(Product.class);
+		UriTemplate template = UriTemplate.of(products.getHref().concat("/{id}"));
 
-		UriTemplate template = new UriTemplate(products.getHref().concat("/{id}"));
-
-		resource.add(new Link(template, relProvider.getItemResourceRelFor(Product.class)));
+		resource.add(Link.of(template, relProvider.getItemResourceRelFor(Product.class)));
 
 		return resource;
 	}

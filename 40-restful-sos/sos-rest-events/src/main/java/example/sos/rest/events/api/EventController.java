@@ -15,7 +15,7 @@
  */
 package example.sos.rest.events.api;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import example.sos.rest.events.AbstractEvent;
 import example.sos.rest.events.EventRepository;
@@ -33,10 +33,10 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.mvc.ControllerLinkBuilderFactory;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilderFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,10 +53,10 @@ import com.querydsl.core.BooleanBuilder;
 class EventController {
 
 	private final EventRepository events;
-	private final ControllerLinkBuilderFactory links;
+	private final WebMvcLinkBuilderFactory links;
 
 	@GetMapping("events")
-	HttpEntity<Resources<?>> events(PagedResourcesAssembler<AbstractEvent<?>> assembler,
+	HttpEntity<CollectionModel<?>> events(PagedResourcesAssembler<AbstractEvent<?>> assembler,
 			@SortDefault("publicationDate") Pageable pageable,
 			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime since,
 			@RequestParam(required = false) String type) {
@@ -75,7 +75,7 @@ class EventController {
 
 		Page<AbstractEvent<?>> result = events.findAll(builder, pageable);
 
-		PagedResources<Resource<AbstractEvent<?>>> resource = assembler.toResource(result, event -> toResource(event));
+		PagedModel<EntityModel<AbstractEvent<?>>> resource = assembler.toModel(result, event -> toResource(event));
 		resource
 				.add(links.linkTo(methodOn(EventController.class).events(assembler, pageable, since, type)).withRel("events"));
 
@@ -83,7 +83,7 @@ class EventController {
 	}
 
 	@GetMapping("events/{id}")
-	ResponseEntity<Resource<AbstractEvent<?>>> event(@PathVariable UUID id) {
+	ResponseEntity<EntityModel<AbstractEvent<?>>> event(@PathVariable UUID id) {
 
 		return events.findById(id) //
 				.map(this::toResource)//
@@ -91,9 +91,9 @@ class EventController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-	private Resource<AbstractEvent<?>> toResource(AbstractEvent<?> event) {
+	private EntityModel<AbstractEvent<?>> toResource(AbstractEvent<?> event) {
 
-		Resource<AbstractEvent<?>> resource = new Resource<>(event);
+		EntityModel<AbstractEvent<?>> resource = EntityModel.of(event);
 
 		resource.add(links.linkTo(methodOn(EventController.class).event(event.getId())).withSelfRel());
 

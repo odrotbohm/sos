@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * @author Oliver Gierke
@@ -53,7 +54,15 @@ public class OrderManager {
 		}
 	}
 
+	/**
+	 * Completes the {@link Order} and triggers inventory update.
+	 * 
+	 * @param order must not be {@literal null}.
+	 */
+	@Transactional
 	public void completeOrder(Order order) {
+
+		Assert.notNull(order, "Order must not be null!");
 
 		order.setStatus(Status.COMPLETED);
 

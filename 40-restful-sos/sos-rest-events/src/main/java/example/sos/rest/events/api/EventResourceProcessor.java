@@ -24,9 +24,9 @@ import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.PersistentPropertyAccessor;
 import org.springframework.data.mapping.context.PersistentEntities;
-import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class EventResourceProcessor implements ResourceProcessor<Resource<Event>> {
+public class EventResourceProcessor implements RepresentationModelProcessor<EntityModel<Event>> {
 
 	private final PersistentEntities entities;
 	private final EntityLinks links;
@@ -44,11 +44,11 @@ public class EventResourceProcessor implements ResourceProcessor<Resource<Event>
 	 * @see org.springframework.hateoas.ResourceProcessor#process(org.springframework.hateoas.ResourceSupport)
 	 */
 	@Override
-	public Resource<Event> process(Resource<Event> resource) {
+	public EntityModel<Event> process(EntityModel<Event> resource) {
 
 		PersistentEntity<?, ? extends PersistentProperty<?>> entity = entities
 				.getRequiredPersistentEntity(resource.getContent().getClass());
-		PersistentPropertyAccessor accessor = entity.getPropertyAccessor(resource.getContent());
+		PersistentPropertyAccessor<?> accessor = entity.getPropertyAccessor(resource.getContent());
 
 		for (PersistentProperty<?> property : entity.getPersistentProperties(AggregateReference.class)) {
 
@@ -62,9 +62,9 @@ public class EventResourceProcessor implements ResourceProcessor<Resource<Event>
 						.getRequiredPersistentEntity(type);
 				IdentifierAccessor identifierAccessor = propertyEntity.getIdentifierAccessor(propertyValue);
 
-				resource.add(links.linkToSingleResource(type, identifierAccessor.getIdentifier()));
+				resource.add(links.linkToItemResource(type, identifierAccessor.getIdentifier()));
 			} else {
-				resource.add(links.linkToSingleResource(annotation.type(), propertyValue));
+				resource.add(links.linkToItemResource(annotation.type(), propertyValue));
 			}
 		}
 

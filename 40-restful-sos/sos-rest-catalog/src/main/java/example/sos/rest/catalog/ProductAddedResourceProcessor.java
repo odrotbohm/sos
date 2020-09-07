@@ -17,29 +17,29 @@ package example.sos.rest.catalog;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 
 /**
  * @author Oliver Gierke
  */
 // @Component
 @RequiredArgsConstructor
-class ProductAddedResourceProcessor implements ResourceProcessor<Resource<ProductAdded>> {
+class ProductAddedResourceProcessor implements RepresentationModelProcessor<EntityModel<ProductAdded>> {
 
 	private final EntityLinks entityLinks;
 
-	/* 
+	/*
 	 * (non-Javadoc)
-	 * @see org.springframework.hateoas.ResourceProcessor#process(org.springframework.hateoas.ResourceSupport)
+	 * @see org.springframework.hateoas.server.RepresentationModelProcessor#process(org.springframework.hateoas.RepresentationModel)
 	 */
 	@Override
-	public Resource<ProductAdded> process(Resource<ProductAdded> resource) {
+	public EntityModel<ProductAdded> process(EntityModel<ProductAdded> resource) {
 
 		ProductAdded content = resource.getContent();
 
-		resource.add(entityLinks.linkToSingleResource(Product.class, content.getProduct().getId()));
+		resource.add(entityLinks.linkToItemResource(Product.class, content.getProduct().getId()));
 
 		return resource;
 	}

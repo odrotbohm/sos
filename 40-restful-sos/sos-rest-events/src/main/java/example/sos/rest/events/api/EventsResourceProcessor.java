@@ -15,17 +15,17 @@
  */
 package example.sos.rest.events.api;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.data.rest.webmvc.RepositoryLinksResource;
-import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Oliver Gierke
  */
 @Component
-class EventsResourceProcessor implements ResourceProcessor<RepositoryLinksResource> {
+class EventsResourceProcessor implements RepresentationModelProcessor<RepositoryLinksResource> {
 
 	/*
 	 * (non-Javadoc)

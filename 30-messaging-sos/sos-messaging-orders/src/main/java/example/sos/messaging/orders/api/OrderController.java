@@ -56,7 +56,7 @@ class OrderController {
 		orders.save(order.complete());
 
 		return ResponseEntity //
-				.created(links.linkForSingleResource(Order.class, order.getId()).toUri()) //
+				.created(links.linkForItemResource(Order.class, order.getId()).toUri()) //
 				.build();
 	}
 }

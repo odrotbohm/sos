@@ -31,10 +31,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.cloud.client.hypermedia.RemoteResource;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.mvc.TypeReferences.ResourcesType;
+import org.springframework.hateoas.server.core.TypeReferences.CollectionModelType;
 import org.springframework.http.RequestEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -48,7 +48,7 @@ import org.springframework.web.client.RestOperations;
 @RequiredArgsConstructor
 public class CatalogIntegration {
 
-	private static final ResourcesType<Resource<ProductAdded>> PRODUCTS_ADDED = new ResourcesType<Resource<ProductAdded>>() {};
+	private static final CollectionModelType<EntityModel<ProductAdded>> PRODUCTS_ADDED = new CollectionModelType<EntityModel<ProductAdded>>() {};
 
 	private final RemoteResource catalogEvents;
 	private final Inventory inventory;
@@ -82,7 +82,7 @@ public class CatalogIntegration {
 		});
 	}
 
-	private void initializeInventory(Resources<Resource<ProductAdded>> resources) {
+	private void initializeInventory(CollectionModel<EntityModel<ProductAdded>> resources) {
 
 		log.info("Processing {} new events…", resources.getContent().size());
 
@@ -97,9 +97,9 @@ public class CatalogIntegration {
 		});
 	}
 
-	private void initInventory(Resource<ProductAdded> resource) {
+	private void initInventory(EntityModel<ProductAdded> resource) {
 
-		ProductId productId = ProductId.of(resource.getLink("product").getHref());
+		ProductId productId = ProductId.of(resource.getRequiredLink("product").getHref());
 
 		log.info("Creating inventory item for product {}.", resource.getContent().getProduct().getDescription());
 

@@ -22,8 +22,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
 import org.springframework.cloud.client.hypermedia.RemoteResource;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,16 +31,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-class LineItemResourceProcessor implements ResourceProcessor<Resource<LineItem>> {
+class LineItemResourceProcessor implements RepresentationModelProcessor<EntityModel<LineItem>> {
 
 	private final @NonNull RemoteResource productResource;
 
-	/* 
+	/*
 	 * (non-Javadoc)
-	 * @see org.springframework.hateoas.ResourceProcessor#process(org.springframework.hateoas.ResourceSupport)
+	 * @see org.springframework.hateoas.server.RepresentationModelProcessor#process(org.springframework.hateoas.RepresentationModel)
 	 */
 	@Override
-	public Resource<LineItem> process(Resource<LineItem> resource) {
+	public EntityModel<LineItem> process(EntityModel<LineItem> resource) {
 
 		LineItem content = resource.getContent();
 

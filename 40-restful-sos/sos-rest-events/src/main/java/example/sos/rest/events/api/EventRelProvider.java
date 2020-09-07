@@ -19,7 +19,8 @@ import example.sos.rest.events.Event;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.hateoas.RelProvider;
+import org.springframework.hateoas.LinkRelation;
+import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -28,15 +29,15 @@ import org.springframework.util.StringUtils;
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class EventRelProvider implements RelProvider {
+public class EventRelProvider implements LinkRelationProvider {
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.hateoas.RelProvider#getCollectionResourceRelFor(java.lang.Class)
 	 */
 	@Override
-	public String getCollectionResourceRelFor(Class<?> type) {
-		return StringUtils.uncapitalize(type.getSimpleName());
+	public LinkRelation getCollectionResourceRelFor(Class<?> type) {
+		return LinkRelation.of(StringUtils.uncapitalize(type.getSimpleName()));
 	}
 
 	/*
@@ -44,16 +45,16 @@ public class EventRelProvider implements RelProvider {
 	 * @see org.springframework.hateoas.RelProvider#getItemResourceRelFor(java.lang.Class)
 	 */
 	@Override
-	public String getItemResourceRelFor(Class<?> type) {
+	public LinkRelation getItemResourceRelFor(Class<?> type) {
 		return getCollectionResourceRelFor(type);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.springframework.plugin.core.Plugin#supports(java.lang.Object)
+	 * @see org.springframework.hateoas.server.LinkRelationProvider#supports(org.springframework.hateoas.server.LinkRelationProvider.LookupContext)
 	 */
 	@Override
-	public boolean supports(Class<?> delimiter) {
-		return Event.class.isAssignableFrom(delimiter);
+	public boolean supports(LookupContext delimiter) {
+		return Event.class.isAssignableFrom(delimiter.getType());
 	}
 }

@@ -15,19 +15,19 @@
  */
 package example.sos.messaging.inventory.api;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.data.rest.webmvc.RepositoryLinksResource;
-import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Oliver Gierke
  */
 @Component
-class InventoryResourceProcessor implements ResourceProcessor<RepositoryLinksResource> {
+class InventoryResourceProcessor implements RepresentationModelProcessor<RepositoryLinksResource> {
 
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.hateoas.ResourceProcessor#process(org.springframework.hateoas.ResourceSupport)
 	 */
