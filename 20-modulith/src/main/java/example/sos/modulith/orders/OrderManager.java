@@ -35,13 +35,7 @@ public class OrderManager {
 		return orders.save(new Order());
 	}
 
-	@Transactional
 	public void complete(Order order) {
-
-		Order complete = order.complete();
-
-		orders.save(complete);
-
-		// Further business logic
+		orders.save(order.complete());
 	}
 }
