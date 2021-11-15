@@ -16,6 +16,7 @@
 package example.sos.modulith.orders;
 
 import example.sos.modulith.orders.Order.OrderCompleted;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.scheduling.annotation.Async;
@@ -29,6 +30,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 class EmailSender {
 
+	private @Setter boolean fail = false;
+
 	@Async
 	@TransactionalEventListener
 	void on(OrderCompleted event) {
@@ -38,6 +41,10 @@ class EmailSender {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException o_O) {}
+
+		if (fail) {
+			throw new RuntimeException();
+		}
 
 		log.info("Successfully sent email for order {}.", event.getOrder());
 	}

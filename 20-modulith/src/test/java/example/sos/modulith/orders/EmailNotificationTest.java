@@ -22,10 +22,10 @@ import example.sos.modulith.catalog.Product;
 import example.sos.modulith.orders.Order.OrderCompleted;
 
 import org.junit.jupiter.api.Test;
+import org.moduliths.events.EventPublication;
+import org.moduliths.events.EventPublicationRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.events.EventPublication;
-import org.springframework.events.EventPublicationRegistry;
 import org.springframework.test.annotation.DirtiesContext;
 
 /**
@@ -38,6 +38,7 @@ public class EmailNotificationTest {
 	@Autowired OrderManager orders;
 	@Autowired Catalog catalog;
 	@Autowired EventPublicationRegistry registry;
+	@Autowired EmailSender emails;
 
 	@Test
 	public void completingAnOrderUpdatesInventory() throws Exception {
@@ -63,13 +64,15 @@ public class EmailNotificationTest {
 	@Test
 	public void systemCrashDuringTransactionalListenerExecutionKeepsPublicationRegistration() throws Exception {
 
+		emails.setFail(true);
+
 		Product product = catalog.findAll().iterator().next();
 
 		Order order = orders.createOrder();
 		order.add(product, 5);
 		orders.complete(order);
 
-		Thread.sleep(800);
+		Thread.sleep(1200);
 
 		// Publication registration left
 		Iterable<EventPublication> publications = registry.findIncompletePublications();
