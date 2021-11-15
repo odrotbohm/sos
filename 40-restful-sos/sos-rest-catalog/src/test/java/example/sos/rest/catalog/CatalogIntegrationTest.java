@@ -1,6 +1,5 @@
-package example.sos.rest.catalog;
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +13,7 @@ package example.sos.rest.catalog;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package example.sos.rest.catalog;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -21,18 +21,15 @@ import example.sos.rest.events.EventRepository;
 
 import java.math.BigDecimal;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author Oliver Gierke
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class CatalogIntegrationTest {
 

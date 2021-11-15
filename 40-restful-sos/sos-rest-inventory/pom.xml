@@ -30,7 +30,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-commons</artifactId>
-			<version>${spring-cloud.version}</version>
 		</dependency>
 
 		<dependency>
