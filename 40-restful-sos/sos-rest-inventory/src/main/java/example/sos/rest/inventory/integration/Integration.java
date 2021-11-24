@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Wither;
+import lombok.With;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -41,7 +41,7 @@ import javax.persistence.Id;
 class Integration {
 
 	private final @GeneratedValue @Id UUID id;
-	private final @Wither(AccessLevel.PACKAGE) LocalDateTime catalogUpdate;
+	private final @With(AccessLevel.PACKAGE) LocalDateTime catalogUpdate;
 
 	Optional<LocalDateTime> getCatalogUpdate() {
 		return Optional.ofNullable(catalogUpdate);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import lombok.experimental.Wither;
+import lombok.With;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class Order extends AbstractAggregateRoot<Order> {
 
 	UUID id;
 	List<LineItem> lineItems;
-	@Wither(AccessLevel.PRIVATE) Status status;
+	@With(AccessLevel.PRIVATE) Status status;
 
 	public static Order newOrder() {
 		return new Order(UUID.randomUUID(), new ArrayList<>(), Status.PLACED);

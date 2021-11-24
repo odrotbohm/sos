@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
-import lombok.experimental.Wither;
+import lombok.With;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class Order extends AbstractAggregateRoot<Order> {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //
 	private List<LineItem> lineItems;
 
-	private @Wither Status status;
+	private @With Status status;
 
 	Order() {
 		this.lineItems = new ArrayList<>();

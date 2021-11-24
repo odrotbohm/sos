@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.Value;
-import lombok.experimental.Wither;
+import lombok.With;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -39,8 +39,8 @@ public class ProductInfo {
 
 	ObjectId id;
 	ProductNumber productNumber;
-	@Wither String description;
-	@Wither BigDecimal price;
+	@With String description;
+	@With BigDecimal price;
 
 	LocalDateTime created;
 
@@ -65,6 +65,7 @@ public class ProductInfo {
 		 * (non-Javadoc)
 		 * @see java.lang.Object#toString()
 		 */
+		@Override
 		public String toString() {
 			return value.toString();
 		}
