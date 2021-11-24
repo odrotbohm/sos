@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import lombok.experimental.Wither;
+import lombok.With;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,12 +37,13 @@ import javax.persistence.Id;
 @Data
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class ProductInfo {
 
 	private @Id UUID id;
 	private ProductId productId;
-	private @Wither String description;
-	private @Wither BigDecimal price;
+	private @With String description;
+	private @With BigDecimal price;
 
 	LocalDateTime created;
 

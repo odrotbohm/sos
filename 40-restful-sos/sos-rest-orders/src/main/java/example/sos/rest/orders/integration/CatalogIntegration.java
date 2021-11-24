@@ -101,7 +101,7 @@ public class CatalogIntegration {
 		ProductAdded event = resource.getContent();
 		Product product = event.getProduct();
 
-		log.info("Creating inventory item for product {}.", product.getDescription());
+		log.info("Creating product information for product {}.", product.getDescription());
 
 		productInfos.findByProductId(productId) //
 				.orElseGet(() -> productInfos.save(ProductInfo.of(productId, product.getDescription(), product.getPrice())));
